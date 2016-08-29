@@ -54,12 +54,6 @@ module.exports = React.createClass({
     }
   },
 
-  componentWillUpdate: function (nextProps, nextState) {
-    if (isUndefined(this.state.position) && !isUndefined(nextState.position)) {
-      this.props.onChange(nextState.value, nextState.position)
-    }
-  },
-
   shouldComponentUpdate: function (nextProps, nextState) {
     // Don't alter the component while dragging is occurring
     return (!nextState.dragging)
@@ -102,9 +96,6 @@ module.exports = React.createClass({
   setHandlePosition: function (props = this.props, value = this.state.value) {
     var position = this.state.trackWidth / (props.max - props.min) * (value - props.min)
     this.setState({position})
-    if (isFunction(this.props.onChange)) {
-      this.props.onChange(value, position)
-    }
   },
 
   updateValueFromPosition: function (newPosition) {
@@ -135,19 +126,10 @@ module.exports = React.createClass({
       position = this.state.trackWidth * (bestMatchPercent / 100)
     }
 
-    // fire change event if callback exists
-    if (isFunction(this.props.onChange)) {
-      var rtposition = position
-      if (this.state.dragging) {
-        rtposition = currentPosition
-      }
-      this.props.onChange(value, rtposition)
-    }
-
     // Although set state is async, pushing its invocation as late as possible
-    this.setState({value, position})
+    this.setState({value, position});
 
-    return position
+    return value;
   },
 
   cumulativeOffset: function (element) {
@@ -168,7 +150,10 @@ module.exports = React.createClass({
 
   clickOnTrack: function (event) {
     var clickFromLeft = event.clientX - this.cumulativeOffset(event.target).left
-    this.updateValueFromPosition(clickFromLeft)
+    let value = this.updateValueFromPosition(clickFromLeft);
+    if(isFunction(this.props.onChange)) {
+      this.props.onChange(value);
+    }
   },
 
   handleUp: function (event, ui) {
@@ -180,7 +165,10 @@ module.exports = React.createClass({
     }
 
     this.setState({dragging: false})
-    this.updateValueFromPosition(position)
+    let value = this.updateValueFromPosition(position);
+    if(isFunction(this.props.onChange)) {
+      this.props.onChange(value);
+    }
   },
 
   handleDown: function (event, ui) {
