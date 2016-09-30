@@ -191,7 +191,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  },
 
 	  setPosition: function setPosition() {
-	    var props = arguments.length <= 0 || arguments[0] === undefined ? this.props : arguments[0];
+	    var props = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this.props;
 
 	    var trackWidth = this.props.trackWidth;
 	    if (this.props.handleWidth) {
@@ -392,8 +392,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	  },
 
 	  setHandlePosition: function setHandlePosition() {
-	    var props = arguments.length <= 0 || arguments[0] === undefined ? this.props : arguments[0];
-	    var value = arguments.length <= 1 || arguments[1] === undefined ? this.state.value : arguments[1];
+	    var props = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this.props;
+	    var value = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : this.state.value;
 
 	    var position = this.state.trackWidth / (props.max - props.min) * (value - props.min);
 	    this.setState({ position: position });
@@ -667,7 +667,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 */
 	function isObject(value) {
 	  var type = typeof value;
-	  return !!value && (type == 'object' || type == 'function');
+	  return value != null && (type == 'object' || type == 'function');
 	}
 
 	module.exports = isObject;
@@ -2050,7 +2050,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var debounce = __webpack_require__(15),
 	    isObject = __webpack_require__(12);
 
-	/** Used as the `TypeError` message for "Functions" methods. */
+	/** Error message constants. */
 	var FUNC_ERROR_TEXT = 'Expected a function';
 
 	/**
@@ -2126,7 +2126,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    now = __webpack_require__(16),
 	    toNumber = __webpack_require__(19);
 
-	/** Used as the `TypeError` message for "Functions" methods. */
+	/** Error message constants. */
 	var FUNC_ERROR_TEXT = 'Expected a function';
 
 	/* Built-in method references for those with the same name as other `lodash` methods. */
@@ -2512,7 +2512,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * // => false
 	 */
 	function isObjectLike(value) {
-	  return !!value && typeof value == 'object';
+	  return value != null && typeof value == 'object';
 	}
 
 	module.exports = isObjectLike;
